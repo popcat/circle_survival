@@ -2,7 +2,7 @@
 
 namespace CircleSurvival
 {
-    public interface ISingleEvent
+    public interface ISimpleEvent
     {
         void Subscribe(Action eventAction);
         void Unsubscribe(Action eventAction);

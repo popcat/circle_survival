@@ -1,7 +1,9 @@
 ﻿using System;
+using UnityEngine;
+
 namespace CircleSurvival
 {
-    public class SingleEvent: ISingleEvent
+    public class SingleEvent: ISimpleEvent
     {
         private event Action onEvent;
 
@@ -17,8 +19,14 @@ namespace CircleSurvival
 
         public void InvokeEvent()
         {
+            onEvent += TestEvent;
             onEvent?.Invoke();
             onEvent = null;
+        }
+
+        private void TestEvent()
+        {
+            Debug.Log("Invoking single event...");
         }
     }
 }

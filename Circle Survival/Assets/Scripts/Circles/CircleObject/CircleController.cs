@@ -4,41 +4,34 @@ using System.Collections;
 
 namespace CircleSurvival
 {
-
-    public class BlackCircleController : MonoBehaviour,ICircleController
+    public class CircleController : MonoBehaviour, ICircleController, IClerable
     {
         private float timeToAction;
+        private Action<GameObject> OnTimeEnd;
         private Coroutine circleCoroutine;
 
-        public void Initialize(float timeToAction, Action<ICircleController> timeEndAction)
+        public void Initialize(float timeToAction, Action<GameObject> timeEndAction)
         {
+            gameObject.SetActive(true);
             this.timeToAction = timeToAction;
-            //spriteRenderer.sprite = sprite;
-            //OnTimeEnd = timeEndAction;
+            OnTimeEnd = timeEndAction;
         }
 
         public void Activate()
         {
-            gameObject.SetActive(true);
             circleCoroutine = StartCoroutine(StartTimer());
-        }
-
-        public void SetPosition(Vector2 position)
-        {
-            gameObject.transform.position = position;
         }
 
         public IEnumerator StartTimer()
         {
             yield return new WaitForSeconds(timeToAction);
-            //OnTimeEnd?.Invoke(this);
+            OnTimeEnd?.Invoke(this.gameObject);
         }
 
         public void Clear()
         {
             StopAllCoroutines();
-            //OnTimeEnd = null;
+            OnTimeEnd = null;
         }
-
     }
 }

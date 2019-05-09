@@ -5,11 +5,11 @@ namespace CircleSurvival
 {
     public class CircleCollider : MonoBehaviour, ICollider, IClerable
     {
-        private event Action<GameObject> onCollision;
+        private Action<GameObject> onCollision;
 
         public void Initialize(Action<GameObject> onCollision)
         {
-            this.onCollision += onCollision;
+            this.onCollision = onCollision;
         }
 
         public void TriggerCollision()

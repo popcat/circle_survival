@@ -6,8 +6,8 @@ namespace CircleSurvival
     public class CircleSpawner: ISpawner
     {
         private readonly IPositionProvider positionProvider;
-        private readonly ICircleProvider greenCircleGenerator;
-        private readonly ICircleProvider blackCircleGenerator;
+        private readonly ICircleProvider greenCircleProvider;
+        private readonly ICircleProvider blackCircleProvider;
         private readonly ICoroutineRunner coroutineRunner;
 
         private float spawnTimeInterval;
@@ -16,12 +16,12 @@ namespace CircleSurvival
         private Coroutine spawnCoroutine;
 
         public CircleSpawner(
-            ICircleProvider greenCircleGenerator, ICircleProvider blackCircleGenerator,
+            ICircleProvider greenCircleProvider, ICircleProvider blackCircleProvider,
             IPositionProvider positionProvider, ICoroutineRunner coroutineRunner,
             float spawnTimeInterval, float deltaSpawnTime)
         {
-            this.greenCircleGenerator = greenCircleGenerator;
-            this.blackCircleGenerator = blackCircleGenerator;
+            this.greenCircleProvider = greenCircleProvider;
+            this.blackCircleProvider = blackCircleProvider;
             this.positionProvider = positionProvider;
             this.coroutineRunner = coroutineRunner;
 
@@ -54,17 +54,18 @@ namespace CircleSurvival
         private void GenerateCircle(System.Random random)
         {
             int randValue = random.Next(10);
-            ICircleController circleController;
+            GameObject circle;
+            /*
             if(randValue == 0)
             {
-                circleController = greenCircleGenerator.GetCircle();
+                circle = greenCircleProvider.GetCircle();
             }
             else
             {
-                circleController = blackCircleGenerator.GetCircle();
-            }
-            circleController.SetPosition(positionProvider.GetPosition());
-            circleController.Activate();
+                circle = blackCircleProvider.GetCircle();
+            }*/
+            circle = blackCircleProvider.GetCircle();
+            circle.transform.position = positionProvider.GetPosition();
         }
     }
 }

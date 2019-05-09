@@ -10,8 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 4780405365100764066}
   - component: {fileID: 1682116548165972884}
-  - component: {fileID: 2830338607206178176}
   - component: {fileID: -2059331171406922443}
+  - component: {fileID: 4997024192650160747}
   m_Layer: 0
   m_Name: TapCircle
   m_TagString: Untagged
@@ -47,18 +47,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 360b16645bef64f13891e8c295a2e1c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &2830338607206178176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1671129527823004188}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 26a9e16ac8df84c8d8b37d11ef13afaa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &-2059331171406922443
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -75,6 +63,18 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.1
+--- !u!114 &4997024192650160747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1671129527823004188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12db1cbb1723f465abe20d518070ac77, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7140015654836641281
 GameObject:
   m_ObjectHideFlags: 0
@@ -86,6 +86,7 @@ GameObject:
   - component: {fileID: 7207251757013355475}
   - component: {fileID: 6891089515565000836}
   - component: {fileID: 3173576063724208412}
+  - component: {fileID: 8820611299987981096}
   m_Layer: 0
   m_Name: TimerCircle
   m_TagString: Untagged
@@ -174,6 +175,18 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &8820611299987981096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7140015654836641281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c43c603f77fb43ba840cf8974c2005b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8228551654936607472
 GameObject:
   m_ObjectHideFlags: 0
@@ -185,6 +198,7 @@ GameObject:
   - component: {fileID: 6959064083175288845}
   - component: {fileID: 5303189041552974060}
   - component: {fileID: 5608085448540946832}
+  - component: {fileID: 7775929784618346636}
   m_Layer: 0
   m_Name: MainCircle
   m_TagString: Untagged
@@ -273,3 +287,15 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &7775929784618346636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8228551654936607472}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c43c603f77fb43ba840cf8974c2005b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
