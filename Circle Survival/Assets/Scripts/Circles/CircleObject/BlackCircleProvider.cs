@@ -25,9 +25,11 @@ namespace CircleSurvival
         {
             GameObject circle = circlePool.TakeFromPool();
             GameObject mainCircle = circle.transform.GetChild(0).gameObject;
+            GameObject fillCircle = circle.transform.GetChild(1).gameObject;
 
             //All components
             CircleAnimationController blackAnimation = mainCircle.GetComponent<CircleAnimationController>();
+            CircleAnimationController fillAnimation = fillCircle.GetComponent<CircleAnimationController>();
             CircleController circleController = circle.GetComponent<CircleController>();
             CircleCollider circleCollider = circle.GetComponent<CircleCollider>();
 
@@ -39,6 +41,8 @@ namespace CircleSurvival
             blackAnimation.SubscribeFullShrink(PoolCircle);
             blackAnimation.SetGrowing();
 
+            fillAnimation.Initialize();
+
             circleCollider.Initialize(BlackCircleExplode);
 
             return circle;
@@ -49,11 +53,11 @@ namespace CircleSurvival
             GameObject circle = obj.GetComponentInParent<CircleController>()?.gameObject;
             if (circle != null)
             {
-                foreach (IClerable clerable in obj.GetComponentsInChildren<IClerable>())
+                foreach (IClerable clerable in circle.GetComponentsInChildren<IClerable>())
                 {
                     clerable.Clear();
                 }
-                circlePool.AddToPool(obj);
+                circlePool.AddToPool(circle);
             }
         }
 

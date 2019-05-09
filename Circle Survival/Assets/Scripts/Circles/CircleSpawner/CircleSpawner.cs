@@ -46,7 +46,7 @@ namespace CircleSurvival
             {
                 GenerateCircle(random);
                 yield return new WaitForSeconds(spawnTimeInterval);
-                spawnTimeInterval = Mathf.Max(0, spawnTimeInterval - deltaSpawnTime);
+                spawnTimeInterval = Mathf.Max(0.25f, spawnTimeInterval - deltaSpawnTime);
             }
         }
 
@@ -55,16 +55,16 @@ namespace CircleSurvival
         {
             int randValue = random.Next(10);
             GameObject circle;
-            /*
+            
             if(randValue == 0)
             {
-                circle = greenCircleProvider.GetCircle();
+                circle = blackCircleProvider.GetCircle();
             }
             else
             {
-                circle = blackCircleProvider.GetCircle();
-            }*/
-            circle = blackCircleProvider.GetCircle();
+                circle = greenCircleProvider.GetCircle();
+            }
+            //circle = greenCircleProvider.GetCircle();
             circle.transform.position = positionProvider.GetPosition();
         }
     }

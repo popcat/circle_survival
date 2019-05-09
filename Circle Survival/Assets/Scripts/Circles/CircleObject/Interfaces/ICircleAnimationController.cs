@@ -5,6 +5,7 @@ namespace CircleSurvival
 {
     public interface ICircleAnimationController
     {
+        void Initialize();
         void Initialize(Color color, float timeOfAnimation = 1);
         void SubscribeFullGrowth(Action action);
         void SubscribeFullGrowth(Action<GameObject> action);

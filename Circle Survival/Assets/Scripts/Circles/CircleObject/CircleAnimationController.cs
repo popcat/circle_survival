@@ -15,17 +15,17 @@ namespace CircleSurvival {
 
         private float timeOfAnimation;
 
-        private Animator animator;
-        private Animator Animator
+        private Animator circleAnimator;
+        private Animator CircleAnimator
         {
             get {
-                if (animator == null)
+                if (circleAnimator == null)
                 {
-                    animator = GetComponent<Animator>();
+                    circleAnimator = GetComponent<Animator>();
                 }
-                return animator;
+                return circleAnimator;
             }
-            set => animator = value;
+            set => circleAnimator = value;
         }
 
         private SpriteRenderer spriteRenderer;
@@ -44,14 +44,20 @@ namespace CircleSurvival {
 
         private void Start()
         {
-            Animator = GetComponent<Animator>();
+            CircleAnimator = GetComponent<Animator>();
             SpriteRenderer = GetComponent<SpriteRenderer>();
-            Clear();
+        }
+
+        public void Initialize()
+        {
+            gameObject.SetActive(false);
         }
 
         public void Initialize(Color color, float timeOfAnimation = 1)
         {
+            gameObject.SetActive(false);
             this.timeOfAnimation = timeOfAnimation;
+            CircleAnimator.speed = 1/timeOfAnimation;
             SpriteRenderer.color = color;
         }
 
@@ -80,25 +86,30 @@ namespace CircleSurvival {
             gameObject.SetActive(true);
             if (animationCoroutine != null)
                 StopCoroutine(animationCoroutine);
-            Animator.SetBool("isGrowing", true);
-            Animator.SetBool("isShrinking", false);
+            CircleAnimator.SetBool("isGrowing", true);
+            CircleAnimator.SetBool("isShrinking", false);
             animationCoroutine = StartCoroutine(SetTimer(onFullGrowth, onFullGrowthCallback));
         }
 
         public void SetShrkinking()
         {
+            CircleAnimator.speed = 1;
             if (animationCoroutine != null)
                 StopCoroutine(animationCoroutine);
-            Animator.SetBool("isShrinking", true);
-            Animator.SetBool("isGrowing", false);
+            CircleAnimator.SetBool("isShrinking", true);
+            CircleAnimator.SetBool("isGrowing", false);
             animationCoroutine = StartCoroutine(SetTimer(onFullShrink, onFullShrinkCallback));
         }
 
         public void Clear()
         {
             StopAllCoroutines();
-            Animator.SetBool("isGrowing", false);
-            Animator.SetBool("isShrinking", false);
+            onFullGrowth = null;
+            onFullGrowthCallback = null;
+            onFullShrink = null;
+            onFullShrinkCallback = null;
+        CircleAnimator.SetBool("isGrowing", false);
+            CircleAnimator.SetBool("isShrinking", false);
             gameObject.SetActive(false);
         }
 

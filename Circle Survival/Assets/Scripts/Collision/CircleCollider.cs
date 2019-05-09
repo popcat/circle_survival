@@ -14,12 +14,13 @@ namespace CircleSurvival
 
         public void TriggerCollision()
         {
-            onCollision?.Invoke(gameObject);
             Debug.Log("Collision detected");
+            onCollision?.Invoke(gameObject);
         }
 
         public void Clear()
         {
+            StopAllCoroutines();
             onCollision = null;
         }
     }

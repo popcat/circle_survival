@@ -46,6 +46,7 @@ namespace CircleSurvival
             greenAnimation.SubscribeFullGrowth(redAnimation.SetGrowing);
             greenAnimation.SubscribeFullGrowth(circleController.Activate);
             greenAnimation.SubscribeFullShrink(PoolCircle);
+            greenAnimation.SetGrowing();
 
             //todo color shit
             redAnimation.Initialize(Color.red, tapTime);
@@ -64,7 +65,7 @@ namespace CircleSurvival
                 {
                     clerable.Clear();
                 }
-                circlePool.AddToPool(obj);
+                circlePool.AddToPool(circle);
             }
         }
 

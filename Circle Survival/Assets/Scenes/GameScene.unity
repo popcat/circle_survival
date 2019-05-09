@@ -246,17 +246,17 @@ MonoBehaviour:
     type: 3}
   circleOptimalCount: 10
   circleSpawnTimeInterval: 2
-  circleDeltaSpawnTime: 0.1
+  circleDeltaSpawnTime: 0.01
   greenColor: {r: 0, g: 1, b: 0.04619026, a: 1}
   greenMinTapTime: 2
   greenMaxTapTime: 4
-  greenDeltaTapTime: 0.1
+  greenDeltaTapTime: 0.01
   blackColor: {r: 0, g: 0, b: 0, a: 1}
   blackTapTime: 3
   shakeDuration: 2
   shakeMagnitude: 1
   shakeInterval: 0.1
-  cameraWidth: 6
+  cameraWidth: 20
 --- !u!4 &1010084292
 Transform:
   m_ObjectHideFlags: 0
