@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 namespace CircleSurvival
 {
@@ -32,11 +33,21 @@ namespace CircleSurvival
         [Header("Camera variables")]
         [SerializeField] private float cameraWidth;
 
+        [Header("UI variables")]
+        [SerializeField] private GameObject gameOverButtonPrefab;
+
         private ScreenData screenData;
-        private ICoroutineRunner mainCoroutineRunner;
-        private ISimpleEvent deathManager;
-        private ISpawner circleSpawner;
+        private GameCoroutineRunner mainCoroutineRunner;
+        private SingleEvent startManager;
+        private SingleEvent deathManager;
+        private CircleSpawner circleSpawner;
         private ScreenShake screenShake;
+        private TouchManager touchManager;
+        private ScoreManager scoreManager;
+
+        private GameOverManager gameOverManager;
+        private GameObject gameOverButton;
+
         #endregion
 
         #region UNITY METHODS
@@ -44,10 +55,13 @@ namespace CircleSurvival
         {
             CreateScreenData();
             CreateCoroutineRunners();
-            CreateDeathManager();
+            CreateEventManagers();
             CreateTouchManager();
             CreateCircles();
             CreateScreenShake();
+            CreateGameOverUI();
+
+            DeathManagerSubcriptions();
         }
 
         private void Start()
@@ -78,18 +92,24 @@ namespace CircleSurvival
             mainRunnerObject.name = "Main Coroutine Runner";
         }
 
-        private void CreateDeathManager()
+        private void CreateScoreManager()
         {
+            //scoreManager = new ScoreManager();
+        }
+
+        private void CreateEventManagers()
+        {
+            startManager = new SingleEvent();
             deathManager = new SingleEvent();
         }
 
         private void CreateTouchManager()
         {
-            GameObject touchManager = Instantiate(touchManagerPrefab);
-            TouchManager touchManagerComponent = touchManager.GetComponent<TouchManager>();
+            GameObject touchManagerObj = Instantiate(touchManagerPrefab);
+            touchManager = touchManagerObj.GetComponent<TouchManager>();
             ITouchInputWrapper touchInputWrapper = new MouseInputWrapper();
 
-            touchManagerComponent.Initialize(touchInputWrapper);
+            touchManager.Initialize(touchInputWrapper);
         }
 
         private void CreateCircles()
@@ -120,14 +140,32 @@ namespace CircleSurvival
                  mainCoroutineRunner, circleSpawnTimeInterval, circleDeltaSpawnTime
             );
         }
+
+        private void CreateGameOverUI()
+        {
+
+            gameOverButton = Instantiate(gameOverButtonPrefab);
+            //todo gameOverButton.GetComponent<ButtonController>().Initialize();
+            gameOverButton.SetActive(false);
+
+            gameOverManager = new GameOverManager();
+        }
+
         #endregion
 
         #region SUBSCRIPTIONS
+        private void StartManagerSubscriptions()
+        {
+            startManager.Subscribe(circleSpawner.StartSpawning);
+            //todo startManager.Subscribe()
+        }
         private void DeathManagerSubcriptions()
         {
             deathManager.Subscribe(screenShake.StartShake);
+            deathManager.Subscribe(circleSpawner.StopSpawning);
+            deathManager.Subscribe(touchManager.SetInactive);
+            //deathManager.Subscribe(gameOverManager.ShowLayout);
         }
-
         #endregion
     }
 }

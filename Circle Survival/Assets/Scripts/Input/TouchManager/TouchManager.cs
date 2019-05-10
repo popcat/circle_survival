@@ -19,6 +19,16 @@ namespace CircleSurvival
             this.touchInputWrapper = touchInputWrapper;
         }
 
+        public void SetActive()
+        {
+            gameObject.SetActive(true);
+        }
+
+        public void SetInactive()
+        {
+            gameObject.SetActive(false);
+        }
+
         public void Start()
         {
             mCamera = Camera.main;

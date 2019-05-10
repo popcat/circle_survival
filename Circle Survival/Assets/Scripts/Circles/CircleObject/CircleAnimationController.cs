@@ -14,6 +14,7 @@ namespace CircleSurvival {
         private Coroutine animationCoroutine;
 
         private float timeOfAnimation;
+        private const float baseTime = 1;
 
         private Animator circleAnimator;
         private Animator CircleAnimator
@@ -53,7 +54,7 @@ namespace CircleSurvival {
             gameObject.SetActive(false);
         }
 
-        public void Initialize(Color color, float timeOfAnimation = 1)
+        public void Initialize(Color color, float timeOfAnimation = baseTime)
         {
             gameObject.SetActive(false);
             this.timeOfAnimation = timeOfAnimation;
@@ -93,11 +94,17 @@ namespace CircleSurvival {
 
         public void SetShrkinking()
         {
-            CircleAnimator.speed = 1;
+            AnimatorStateInfo stateInfo = CircleAnimator.GetCurrentAnimatorStateInfo(0);
+            float animProgress = stateInfo.normalizedTime;
+            animProgress = 1 - (animProgress % (int)animProgress);
+
             if (animationCoroutine != null)
                 StopCoroutine(animationCoroutine);
             CircleAnimator.SetBool("isShrinking", true);
             CircleAnimator.SetBool("isGrowing", false);
+            CircleAnimator.SetFloat("progress", animProgress);
+            CircleAnimator.speed = baseTime;
+
             animationCoroutine = StartCoroutine(SetTimer(onFullShrink, onFullShrinkCallback));
         }
 
@@ -108,7 +115,7 @@ namespace CircleSurvival {
             onFullGrowthCallback = null;
             onFullShrink = null;
             onFullShrinkCallback = null;
-        CircleAnimator.SetBool("isGrowing", false);
+            CircleAnimator.SetBool("isGrowing", false);
             CircleAnimator.SetBool("isShrinking", false);
             gameObject.SetActive(false);
         }
