@@ -25,16 +25,18 @@ namespace CircleSurvival
         [SerializeField] private Color blackColor;
         [SerializeField] private float blackTapTime;
 
+        [Header("Camera variables")]
+        [SerializeField] private float cameraWidth;
+
         [Header("Screen Shake variables")]
         [SerializeField] private float shakeDuration;
         [SerializeField] private float shakeMagnitude;
         [SerializeField] private float shakeInterval;
 
-        [Header("Camera variables")]
-        [SerializeField] private float cameraWidth;
-
         [Header("UI variables")]
-        [SerializeField] private GameObject gameOverButtonPrefab;
+        [SerializeField] private GameObject scoreLabel;
+        [SerializeField] private GameObject gameOverLayout;
+        [SerializeField] private float gameOverDelay;
 
         private ScreenData screenData;
         private GameCoroutineRunner mainCoroutineRunner;
@@ -44,6 +46,8 @@ namespace CircleSurvival
         private ScreenShake screenShake;
         private TouchManager touchManager;
         private ScoreManager scoreManager;
+        private ScoreTextController scoreTextController;
+        private PlayerScore playerScore;
 
         private GameOverManager gameOverManager;
         private GameObject gameOverButton;
@@ -59,15 +63,16 @@ namespace CircleSurvival
             CreateTouchManager();
             CreateCircles();
             CreateScreenShake();
+            CreateScoreManager();
             CreateGameOverUI();
 
-            DeathManagerSubcriptions();
+            StartManagerSubscriptions();
+            DeathManagerSubscriptions(); 
         }
 
         private void Start()
         {
-            //todo change it to starting event
-            circleSpawner.StartSpawning();
+            startManager.InvokeEvent();
         }
         #endregion
 
@@ -94,7 +99,9 @@ namespace CircleSurvival
 
         private void CreateScoreManager()
         {
-            //scoreManager = new ScoreManager();
+            playerScore = new PlayerScore();
+            scoreTextController = new ScoreTextController(scoreLabel.GetComponent<Text>(), "SCORE: ");
+            scoreManager = new ScoreManager(playerScore, scoreTextController, mainCoroutineRunner, scorePoints: 5);
         }
 
         private void CreateEventManagers()
@@ -143,28 +150,26 @@ namespace CircleSurvival
 
         private void CreateGameOverUI()
         {
-
-            gameOverButton = Instantiate(gameOverButtonPrefab);
-            //todo gameOverButton.GetComponent<ButtonController>().Initialize();
-            gameOverButton.SetActive(false);
-
-            gameOverManager = new GameOverManager();
+            NextSceneManager sceneManager = new NextSceneManager("StartScene");
+            ButtonController buttonController = new ButtonController(gameOverLayout.GetComponentInChildren<Button>(), sceneManager.LoadNextScene);
+            gameOverManager = new GameOverManager(gameOverLayout, mainCoroutineRunner, gameOverDelay, playerScore);
         }
-
         #endregion
 
         #region SUBSCRIPTIONS
         private void StartManagerSubscriptions()
         {
             startManager.Subscribe(circleSpawner.StartSpawning);
-            //todo startManager.Subscribe()
+            startManager.Subscribe(scoreManager.StartScoreCounter);
+            startManager.Subscribe(scoreTextController.SetActive);
         }
-        private void DeathManagerSubcriptions()
+        private void DeathManagerSubscriptions()
         {
-            deathManager.Subscribe(screenShake.StartShake);
+            deathManager.Subscribe(scoreManager.StopScoreCounter);
             deathManager.Subscribe(circleSpawner.StopSpawning);
             deathManager.Subscribe(touchManager.SetInactive);
-            //deathManager.Subscribe(gameOverManager.ShowLayout);
+            deathManager.Subscribe(screenShake.StartShake);
+            deathManager.Subscribe(gameOverManager.ShowLayout);
         }
         #endregion
     }

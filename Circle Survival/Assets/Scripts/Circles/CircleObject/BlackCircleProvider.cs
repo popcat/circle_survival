@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 
 namespace CircleSurvival
 {
@@ -28,20 +29,19 @@ namespace CircleSurvival
             GameObject fillCircle = circle.transform.GetChild(1).gameObject;
 
             //All components
-            CircleAnimationController blackAnimation = mainCircle.GetComponent<CircleAnimationController>();
-            CircleAnimationController fillAnimation = fillCircle.GetComponent<CircleAnimationController>();
-            CircleController circleController = circle.GetComponent<CircleController>();
-            CircleCollider circleCollider = circle.GetComponent<CircleCollider>();
+            ICircleController blackController = mainCircle.GetComponent<ICircleController>();
+            ICircleController fillController = fillCircle.GetComponent<ICircleController>();
+            ICollider circleCollider = circle.GetComponent<ICollider>();
 
             //All Subscriptions
-            circleController.Initialize(tapTime, BlackCircleDisarm);
+            circle.SetActive(true);
 
-            blackAnimation.Initialize(color);
-            blackAnimation.SubscribeFullGrowth(circleController.Activate);
-            blackAnimation.SubscribeFullShrink(PoolCircle);
-            blackAnimation.SetGrowing();
+            blackController.Initialize(color, 1f);
+            blackController.SubscribeFullGrowth(SetTimer);
+            blackController.SubscribeFullShrink(PoolCircle);
+            blackController.SetGrowing();
 
-            fillAnimation.Initialize();
+            fillController.Initialize();
 
             circleCollider.Initialize(BlackCircleExplode);
 
@@ -50,7 +50,7 @@ namespace CircleSurvival
 
         public void PoolCircle(GameObject obj)
         {
-            GameObject circle = obj.GetComponentInParent<CircleController>()?.gameObject;
+            GameObject circle = obj.transform.parent.gameObject;
             if (circle != null)
             {
                 foreach (IClerable clerable in circle.GetComponentsInChildren<IClerable>())
@@ -68,7 +68,18 @@ namespace CircleSurvival
 
         private void BlackCircleDisarm(GameObject obj)
         {
-            obj.transform.GetChild(0).GetComponent<CircleAnimationController>().SetShrkinking();
+            obj.GetComponent<ICircleController>().SetShrkinking();
+        }
+
+        private void SetTimer(GameObject obj)
+        {
+            obj.GetComponent<ICoroutineRunner>().StartCoroutine(timerRunner(obj));
+        }
+
+        private IEnumerator timerRunner(GameObject obj)
+        {
+            yield return new WaitForSeconds(tapTime);
+            BlackCircleDisarm(obj);
         }
     }
 }

@@ -40,7 +40,8 @@ namespace CircleSurvival {
 
         private IEnumerator RunScoreCoroutine()
         {
-            while(true)
+            textController.UpdateText(playerScore.Score);
+            while (true)
             {
                 yield return new WaitForSeconds(timeInterval);
                 playerScore.IncreaseBy(scorePoints);

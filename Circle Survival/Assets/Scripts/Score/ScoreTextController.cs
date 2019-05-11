@@ -11,11 +11,22 @@ namespace CircleSurvival
         {
             this.scoreText = scoreText;
             this.textBegining = textBegining;
+            SetInactive();
+        }
+
+        public void SetActive()
+        {
+            scoreText.gameObject.SetActive(true);
+        }
+
+        public void SetInactive()
+        {
+            scoreText.gameObject.SetActive(false);
         }
 
         public void UpdateText(int score)
         {
-            scoreText.text = textBegining + score;
+            scoreText.text = "" + score;
         }
     }
 }

@@ -1,22 +1,17 @@
 ﻿using System;
-using UnityEngine;
 using UnityEngine.UI;
 
 namespace CircleSurvival
 {
-    public class ButtonController: MonoBehaviour
+    public class ButtonController
     {
         private Button button;
 
-        public void Initialize(Action onButtonClick)
+        public ButtonController(Button button, Action onButtonClick)
         {
+            this.button = button;
             button.onClick.RemoveAllListeners();
             button.onClick.AddListener(onButtonClick.Invoke);
-        }
-
-        private void Start()
-        {
-            button = GetComponent<Button>();
         }
 
         public void Click()

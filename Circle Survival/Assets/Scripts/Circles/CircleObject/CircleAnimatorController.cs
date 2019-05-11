@@ -3,8 +3,13 @@ using System.Collections;
 using System;
 
 namespace CircleSurvival {
-    public class CircleAnimationController : MonoBehaviour, ICircleAnimationController, IClerable
+    public class CircleAnimatorController : MonoBehaviour, ICircleController, IClerable, ICoroutineRunner
     {
+        private const string isGrowing = "isGrowing";
+        private const string isShrinking = "isShrinking";
+        private const string growProgress = "growProgress";
+        private const string shrinkProgress = "shrinkProgress";
+
         private Action onFullGrowth;
         private Action<GameObject> onFullGrowthCallback;
 
@@ -14,7 +19,7 @@ namespace CircleSurvival {
         private Coroutine animationCoroutine;
 
         private float timeOfAnimation;
-        private const float baseTime = 1;
+        private const float baseTime = 5;
 
         private Animator circleAnimator;
         private Animator CircleAnimator
@@ -87,22 +92,22 @@ namespace CircleSurvival {
             gameObject.SetActive(true);
             if (animationCoroutine != null)
                 StopCoroutine(animationCoroutine);
-            CircleAnimator.SetBool("isGrowing", true);
-            CircleAnimator.SetBool("isShrinking", false);
+            CircleAnimator.SetBool(isGrowing, true);
+            CircleAnimator.SetBool(isShrinking, false);
             animationCoroutine = StartCoroutine(SetTimer(onFullGrowth, onFullGrowthCallback));
         }
 
         public void SetShrkinking()
         {
             AnimatorStateInfo stateInfo = CircleAnimator.GetCurrentAnimatorStateInfo(0);
-            float animProgress = stateInfo.normalizedTime;
-            animProgress = 1 - (animProgress % (int)animProgress);
+            float progress = stateInfo.normalizedTime;//CircleAnimator.GetFloat(growProgress);
+            progress = progress % (int)progress;
 
             if (animationCoroutine != null)
                 StopCoroutine(animationCoroutine);
-            CircleAnimator.SetBool("isShrinking", true);
-            CircleAnimator.SetBool("isGrowing", false);
-            CircleAnimator.SetFloat("progress", animProgress);
+            CircleAnimator.SetBool(isShrinking, true);
+            CircleAnimator.SetBool(isGrowing, false);
+            CircleAnimator.SetFloat(shrinkProgress, 1 - progress);
             CircleAnimator.speed = baseTime;
 
             animationCoroutine = StartCoroutine(SetTimer(onFullShrink, onFullShrinkCallback));

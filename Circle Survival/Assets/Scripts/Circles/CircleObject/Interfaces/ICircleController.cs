@@ -5,7 +5,13 @@ namespace CircleSurvival
 {
     public interface ICircleController
     {
-        void Initialize(float TimeToAction, Action<GameObject> timeEndAction);
-        void Activate();
+        void Initialize();
+        void Initialize(Color color, float timeOfAnimation);
+        void SubscribeFullGrowth(Action action);
+        void SubscribeFullGrowth(Action<GameObject> action);
+        void SubscribeFullShrink(Action action);
+        void SubscribeFullShrink(Action<GameObject> action);
+        void SetGrowing();
+        void SetShrkinking();
     }
 }

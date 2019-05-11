@@ -64,7 +64,7 @@ namespace CircleSurvival
             {
                 circle = greenCircleProvider.GetCircle();
             }
-            //circle = greenCircleProvider.GetCircle();
+            //circle = blackCircleProvider.GetCircle();
             circle.transform.position = positionProvider.GetPosition();
         }
     }

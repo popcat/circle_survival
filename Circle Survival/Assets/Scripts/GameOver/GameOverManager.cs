@@ -6,33 +6,52 @@ namespace CircleSurvival
 {
     public class GameOverManager
     {
-        private Text gameOverText;
-        private Text scoreInfoText;
-        private Text scoreValueText;
-        private Button endButton;
-        private Image panelImage;
-
+        private readonly GameObject gameOverLayout;
+        private readonly ICoroutineRunner gameRunner;
         private readonly float showDelay;
+        private readonly PlayerScore playerScore;
 
-        public GameOverManager()
+        private const string lowScore = "SCORE";
+        private const string highScore = "NEW HIGH SCORE";
+
+        private Coroutine gameOverCoroutine;
+        private Text scoreText;
+        private Text pointsText;
+
+        public GameOverManager(GameObject gameOverLayout, ICoroutineRunner gameRunner, float showDelay, PlayerScore playerScore)
         {
-            showDelay = 0;
+            this.gameOverLayout = gameOverLayout;
+            this.gameRunner = gameRunner;
+            this.showDelay = showDelay;
+            this.playerScore = playerScore;
+            scoreText = gameOverLayout.transform.Find("ScoreLabel").GetComponent<Text>();
+            pointsText = gameOverLayout.transform.Find("PointsLabel").GetComponent<Text>();
+            HideLayout();
         }
 
         public void ShowLayout()
         {
-            //todo controllery
-            gameOverText.gameObject.SetActive(true);
-            scoreInfoText.gameObject.SetActive(true);
-            scoreValueText.gameObject.SetActive(true);
-            endButton.gameObject.SetActive(true);
-            panelImage.gameObject.SetActive(true);
+            gameOverCoroutine = gameRunner.StartCoroutine(ShowInDelay());
+        }
+
+        public void HideLayout()
+        {
+            gameOverLayout.SetActive(false);
         }
 
         private IEnumerator ShowInDelay()
         {
             yield return new WaitForSeconds(showDelay);
-            ShowLayout();
+            if(playerScore.Score > playerScore.HighScore)
+            {
+                scoreText.text = highScore;
+            }
+            else
+            {
+                scoreText.text = lowScore;
+            }
+            pointsText.text = "" + playerScore.Score;
+            gameOverLayout.SetActive(true);
         }
     }
 }

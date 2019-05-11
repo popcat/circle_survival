@@ -34,22 +34,20 @@ namespace CircleSurvival
             GameObject fillCircle = circle.transform.GetChild(1).gameObject;
 
             //All components
-            CircleAnimationController greenAnimation = mainCircle.GetComponent<CircleAnimationController>();
-            CircleAnimationController redAnimation = fillCircle.GetComponent<CircleAnimationController>();
-            CircleController circleController = circle.GetComponent<CircleController>();
-            CircleCollider circleCollider = circle.GetComponent<CircleCollider>();
+            ICircleController greenController= mainCircle.GetComponent<ICircleController>();
+            ICircleController redController = fillCircle.GetComponent<ICircleController>();
+            ICollider circleCollider = circle.GetComponent<ICollider>();
 
-            //Initializations
-            circleController.Initialize(tapTime, GreenCircleExplode);
+            circle.SetActive(true);
 
-            greenAnimation.Initialize(color);
-            greenAnimation.SubscribeFullGrowth(redAnimation.SetGrowing);
-            greenAnimation.SubscribeFullGrowth(circleController.Activate);
-            greenAnimation.SubscribeFullShrink(PoolCircle);
-            greenAnimation.SetGrowing();
+            greenController.Initialize(color, 0.5f);
+            greenController.SubscribeFullGrowth(redController.SetGrowing);
+            greenController.SubscribeFullShrink(PoolCircle);
+            greenController.SetGrowing();
 
-            //todo color shit
-            redAnimation.Initialize(Color.red, tapTime);
+            //todo color 
+            redController.Initialize(Color.red, tapTime);
+            redController.SubscribeFullGrowth(GreenCircleExplode);
 
             circleCollider.Initialize(GreenCircleDisarm);
 
@@ -58,7 +56,7 @@ namespace CircleSurvival
 
         public void PoolCircle(GameObject obj)
         {
-            GameObject circle = obj.GetComponentInParent<CircleController>()?.gameObject;
+            GameObject circle = obj.transform.parent.gameObject;
             if (circle != null)
             {
                 foreach (IClerable clerable in obj.GetComponentsInChildren<IClerable>())
@@ -76,7 +74,7 @@ namespace CircleSurvival
 
         private void GreenCircleDisarm(GameObject obj)
         {
-            foreach(ICircleAnimationController iac in obj.GetComponentsInChildren<ICircleAnimationController>())
+            foreach(ICircleController iac in obj.GetComponentsInChildren<ICircleController>())
             {
                 iac.SetShrkinking();
             }
