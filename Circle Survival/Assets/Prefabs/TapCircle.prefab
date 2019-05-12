@@ -74,7 +74,7 @@ GameObject:
   - component: {fileID: 6891089515565000836}
   - component: {fileID: 474181822167886073}
   m_Layer: 0
-  m_Name: TimerCircle
+  m_Name: FillCircle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131,7 +131,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 11
-  m_Sprite: {fileID: 21300000, guid: 8f2f7975b28c5451da4ec929e764e109, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4f8e2d051954f0643855fef5a0488814, type: 3}
   m_Color: {r: 1, g: 0, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -223,7 +223,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 10
-  m_Sprite: {fileID: 21300000, guid: 8f2f7975b28c5451da4ec929e764e109, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 4f8e2d051954f0643855fef5a0488814, type: 3}
   m_Color: {r: 0, g: 1, b: 0.2465775, a: 1}
   m_FlipX: 0
   m_FlipY: 0

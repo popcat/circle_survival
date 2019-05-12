@@ -10,18 +10,22 @@ namespace CircleSurvival
 
         private float minTapTime, maxTapTime;
         private readonly float deltaTapTime;
-        private readonly Color color;
+        private readonly float baseAnimationTime;
+        private readonly Color greenColor;
+        private readonly Color redColor;
 
         public GreenCircleProvider(
             IObjectPool<GameObject> objectPool, Action explodeAction,
-            float minTapTime, float maxTapTime, float deltaTapTime, Color color)
+            float minTapTime, float maxTapTime, float deltaTapTime, float baseAnimationTime, Color greenColor, Color redColor)
         {
             this.circlePool = objectPool;
             this.OnExplode = explodeAction;
             this.minTapTime = minTapTime;
             this.maxTapTime = maxTapTime;
             this.deltaTapTime = deltaTapTime;
-            this.color = color;
+            this.baseAnimationTime = baseAnimationTime;
+            this.greenColor = greenColor;
+            this.redColor = redColor;
         }
 
         public GameObject GetCircle()
@@ -40,13 +44,13 @@ namespace CircleSurvival
 
             circle.SetActive(true);
 
-            greenController.Initialize(color, 0.5f);
+            greenController.Initialize(greenColor, baseAnimationTime, baseAnimationTime);
             greenController.SubscribeFullGrowth(redController.SetGrowing);
             greenController.SubscribeFullShrink(PoolCircle);
             greenController.SetGrowing();
 
             //todo color 
-            redController.Initialize(Color.red, tapTime);
+            redController.Initialize(redColor, tapTime, baseAnimationTime);
             redController.SubscribeFullGrowth(GreenCircleExplode);
 
             circleCollider.Initialize(GreenCircleDisarm);

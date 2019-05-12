@@ -10,15 +10,17 @@ namespace CircleSurvival
         private Action OnExplode;
 
         private readonly float tapTime;
+        private readonly float baseAnimationTime;
         private readonly Color color;
 
         public BlackCircleProvider(
             IObjectPool<GameObject> objectPool, Action deathAction,
-            float tapTime, Color color)
+            float tapTime, float baseAnimationTime, Color color)
         {
             this.circlePool = objectPool;
             this.OnExplode = deathAction;
             this.tapTime = tapTime;
+            this.baseAnimationTime = baseAnimationTime;
             this.color = color;
         }
 
@@ -36,7 +38,7 @@ namespace CircleSurvival
             //All Subscriptions
             circle.SetActive(true);
 
-            blackController.Initialize(color, 1f);
+            blackController.Initialize(color, baseAnimationTime, baseAnimationTime);
             blackController.SubscribeFullGrowth(SetTimer);
             blackController.SubscribeFullShrink(PoolCircle);
             blackController.SetGrowing();

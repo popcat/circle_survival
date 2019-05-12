@@ -1,19 +1,42 @@
-﻿namespace CircleSurvival
+﻿using System;
+
+namespace CircleSurvival
 {
     public class PlayerScore
     {
-        public int Score { get; private set; }
-        public int HighScore { get; private set; }
+        private event Action<int> onScoreChange;
 
-        public PlayerScore(int score = 0, int highScore = 0)
+        private int score;
+        public int Score
+        {
+            get => score;
+            set
+            {
+                score = value;
+                onScoreChange?.Invoke(score);
+            } 
+        }
+
+        public PlayerScore(int score = 0)
         {
             Score = score;
-            HighScore = highScore;
         }
 
         public void IncreaseBy(int scorePoints)
         {
             Score += scorePoints;
+        }
+
+        public void Subscribe(Action<int> action)
+        {
+            action.Invoke(score);
+            onScoreChange += action;
+        }
+
+
+        public void Unsubscribe(Action<int> action)
+        {
+            onScoreChange -= action;
         }
     }
 }

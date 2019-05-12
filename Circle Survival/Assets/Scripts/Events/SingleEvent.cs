@@ -5,7 +5,7 @@ namespace CircleSurvival
 {
     public class SingleEvent: ISimpleEvent
     {
-        private Action onEvent;
+        private event Action onEvent;
 
         public SingleEvent()
         {
@@ -15,6 +15,11 @@ namespace CircleSurvival
         public void Subscribe(Action eventAction)
         {
             onEvent += eventAction;
+        }
+
+        public void Unsubscribe(Action eventAction)
+        {
+            onEvent -= eventAction;
         }
 
         public void InvokeEvent()

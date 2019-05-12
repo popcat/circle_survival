@@ -14,7 +14,8 @@ namespace CircleSurvival
 
         private Coroutine animationCoroutine;
 
-        private float timeOfAnimation;
+        private float timeOfGrowth;
+        private float timeOfShrink;
 
         private SpriteRenderer spriteRenderer;
         private SpriteRenderer SpriteRenderer
@@ -37,12 +38,14 @@ namespace CircleSurvival
 
         public void Initialize()
         {
+
             gameObject.SetActive(false);
         }
 
-        public void Initialize(Color color, float timeOfAnimation)
+        public void Initialize(Color color, float timeOfGrowth, float timeOfShrink)
         {
-            this.timeOfAnimation = timeOfAnimation;
+            this.timeOfGrowth = timeOfGrowth;
+            this.timeOfShrink = timeOfShrink;
             transform.localScale = Vector2.zero;
             gameObject.SetActive(false);
             SpriteRenderer.color = color;
@@ -80,7 +83,6 @@ namespace CircleSurvival
         {
             if (animationCoroutine != null)
                 StopCoroutine(animationCoroutine);
-            timeOfAnimation = 1;
             animationCoroutine = StartCoroutine(SetTimerBack());
         }
 
@@ -99,7 +101,7 @@ namespace CircleSurvival
             while (transform.localScale.x < 1)
             {
                 yield return new WaitForEndOfFrame();
-                float interval = Time.deltaTime / timeOfAnimation;
+                float interval = Time.deltaTime / timeOfGrowth;
                 transform.localScale += new Vector3(interval, interval, 0);
             }
             transform.localScale = Vector2.one;
@@ -112,7 +114,7 @@ namespace CircleSurvival
             while (transform.localScale.x > 0)
             {
                 yield return new WaitForEndOfFrame();
-                float interval = Time.deltaTime / timeOfAnimation;
+                float interval = Time.deltaTime / timeOfShrink;
                 transform.localScale -= new Vector3(interval, interval, 0);
             }
             transform.localScale = Vector2.zero;
