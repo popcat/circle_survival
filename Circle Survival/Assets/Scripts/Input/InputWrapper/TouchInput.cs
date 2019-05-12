@@ -2,6 +2,9 @@
 
 namespace CircleSurvival
 {
+    /***
+    * Structure with touch input data
+    * */
     public struct TouchInput
     {
         private bool isTouching;

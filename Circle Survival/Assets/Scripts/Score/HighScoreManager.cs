@@ -1,15 +1,16 @@
-﻿using System.Collections;
-using UnityEngine;
-
-namespace CircleSurvival {
-    public class ScoreManager
+﻿namespace CircleSurvival
+{
+    /***
+     * Prvides access to saved highscore data
+     * */
+    public class HighScoreManager
     {
         private readonly PlayerScore playerScore;
         private readonly ISaveManager saveManager;
 
         public int HighScore { get; private set; }
 
-        public ScoreManager(
+        public HighScoreManager(
             PlayerScore playerScore, ISaveManager saveManager)
         {
             this.playerScore = playerScore;

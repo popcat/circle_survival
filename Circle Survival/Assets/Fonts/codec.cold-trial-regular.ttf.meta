@@ -1,0 +1,23 @@
+fileFormatVersion: 2
+guid: 4f6a3dae402e17749bef30c864ac52da
+TrueTypeFontImporter:
+  externalObjects: {}
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Codec Cold Trial
+  fontNames:
+  - Codec Cold Trial
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 89315637cfc54e342999f9e88f5df9de, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  useLegacyBoundsCalculation: 0
+  shouldRoundAdvanceValue: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

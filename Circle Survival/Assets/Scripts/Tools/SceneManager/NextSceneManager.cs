@@ -2,9 +2,12 @@
 
 namespace CircleSurvival
 {
+    /***
+     * Loads next scene
+     * */
     class NextSceneManager
     {
-        private string nextScene;
+        private readonly string nextScene;
 
         public NextSceneManager(string nextScene)
         {

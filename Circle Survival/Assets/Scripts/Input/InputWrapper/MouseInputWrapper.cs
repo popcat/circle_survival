@@ -2,6 +2,9 @@
 
 namespace CircleSurvival
 {
+    /***
+    * Input wrapper for mouse input only
+    * */
     public class MouseInputWrapper : ITouchInputWrapper
     {
         public TouchInput GetTouch(int index)
@@ -10,7 +13,6 @@ namespace CircleSurvival
             {
                 return new TouchInput(true, Input.mousePosition, TouchPhase.Began);
             }
-            //by default isTouching will be set to false
             return new TouchInput();
         }
     }

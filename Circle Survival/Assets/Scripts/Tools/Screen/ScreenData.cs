@@ -4,6 +4,9 @@ namespace CircleSurvival
 {
     public class ScreenData
     {
+        /***
+         * Stroring and managing screen and camera data
+         * */
         public Camera MainCamera { get; private set; }
 
         public float ScreenWidth { get; private set; }

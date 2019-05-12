@@ -3,6 +3,9 @@ using System;
 
 namespace CircleSurvival
 {
+    /***
+    * Manual collision trigger system for events
+    ***/
     public class CircleCollider : MonoBehaviour, ICollider, IClerable
     {
         private Action<GameObject> onCollision;

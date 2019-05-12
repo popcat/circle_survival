@@ -4,14 +4,19 @@ using System.Collections;
 
 namespace CircleSurvival
 {
+    /***
+     * Provides circle from object pool to caller,
+     * Handles initialization and clearing of circles
+     ***/
     public class BlackCircleProvider : ICircleProvider
     {
         private readonly IObjectPool<GameObject> circlePool;
-        private Action OnExplode;
-
+        private readonly Action OnExplode;
         private readonly float tapTime;
         private readonly float baseAnimationTime;
         private readonly Color color;
+
+       
 
         public BlackCircleProvider(
             IObjectPool<GameObject> objectPool, Action deathAction,
@@ -37,13 +42,12 @@ namespace CircleSurvival
 
             //All Subscriptions
             circle.SetActive(true);
+            fillCircle.SetActive(false);
 
             blackController.Initialize(color, baseAnimationTime, baseAnimationTime);
             blackController.SubscribeFullGrowth(SetTimer);
             blackController.SubscribeFullShrink(PoolCircle);
             blackController.SetGrowing();
-
-            fillController.Initialize();
 
             circleCollider.Initialize(BlackCircleExplode);
 

@@ -2,14 +2,11 @@
 
 namespace CircleSurvival
 {
+    /***
+    * Reads player input and interacts with objects in the scene with raycasts              
+    * */
     public class TouchManager : MonoBehaviour
-    {
-        /***
-         * TouchManager reads player input and interacts with object in the scene        
-         * Use touch input wrapper for mobile play
-         * Use mouse input wrapper for editor testing              
-         * */  
-               
+    {             
         private ITouchInputWrapper touchInputWrapper;
         private Camera mCamera;
 
@@ -35,12 +32,11 @@ namespace CircleSurvival
             if (touchInputWrapper == null)
             {
                 Debug.Log("NO INPUT WRAPPER, assining default");
-                touchInputWrapper = new MouseInputWrapper();
+                touchInputWrapper = new MouseAndTouchInputWrapper();
             }
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
             TouchInput touchInput = touchInputWrapper.GetTouch(0);
             if (touchInput.IsTouching && touchInput.TouchPhase.Equals(TouchPhase.Began))

@@ -3,6 +3,9 @@ using System.Collections;
 
 namespace CircleSurvival
 {
+    /***
+    * Spawns circles provided by circle providers
+    ***/
     public class CircleSpawner: ISpawner
     {
         private readonly IPositionProvider positionProvider;
@@ -10,23 +13,27 @@ namespace CircleSurvival
         private readonly ICircleProvider blackCircleProvider;
         private readonly ICoroutineRunner coroutineRunner;
 
-        private float spawnTimeInterval;
-        private readonly float deltaSpawnTime;
+        private float minSpawnTime;
+        private float maxSpawnTime;
+        private float deltaSpawnTime;
+        private float deltaSpawnAcceleration;
 
         private Coroutine spawnCoroutine;
 
         public CircleSpawner(
             ICircleProvider greenCircleProvider, ICircleProvider blackCircleProvider,
             IPositionProvider positionProvider, ICoroutineRunner coroutineRunner,
-            float spawnTimeInterval, float deltaSpawnTime)
+            float minSpawnTime, float maxSpawnTime, float deltaSpawnTime, float deltaSpawnAcceleration)
         {
             this.greenCircleProvider = greenCircleProvider;
             this.blackCircleProvider = blackCircleProvider;
             this.positionProvider = positionProvider;
             this.coroutineRunner = coroutineRunner;
 
-            this.spawnTimeInterval = spawnTimeInterval;
+            this.minSpawnTime = minSpawnTime;
+            this.maxSpawnTime = maxSpawnTime;
             this.deltaSpawnTime = deltaSpawnTime;
+            this.deltaSpawnAcceleration = deltaSpawnAcceleration;
         }
 
         public void StartSpawning()
@@ -45,8 +52,13 @@ namespace CircleSurvival
             while(true)
             {
                 GenerateCircle(random);
-                yield return new WaitForSeconds(spawnTimeInterval);
-                spawnTimeInterval = Mathf.Max(0.25f, spawnTimeInterval - deltaSpawnTime);
+                float timeInterval = UnityEngine.Random.Range(minSpawnTime, maxSpawnTime);
+                yield return new WaitForSeconds(timeInterval);
+                minSpawnTime = Mathf.Max(0.1f, minSpawnTime - deltaSpawnTime);
+                maxSpawnTime = Mathf.Max(0.1f, maxSpawnTime - deltaSpawnTime);
+                deltaSpawnTime = Mathf.Max(0.002f, deltaSpawnTime - deltaSpawnAcceleration);
+                Debug.Log("min spawn time =" + minSpawnTime);
+                Debug.Log("deltaSpawnTimee =" + deltaSpawnTime);
             }
         }
 
@@ -54,17 +66,7 @@ namespace CircleSurvival
         private void GenerateCircle(System.Random random)
         {
             int randValue = random.Next(10);
-            GameObject circle;
-            
-            if(randValue == 0)
-            {
-                circle = blackCircleProvider.GetCircle();
-            }
-            else
-            {
-                circle = greenCircleProvider.GetCircle();
-            }
-            //circle = blackCircleProvider.GetCircle();
+            GameObject circle = (randValue == 0) ? blackCircleProvider.GetCircle() : greenCircleProvider.GetCircle();
             circle.transform.position = positionProvider.GetPosition();
         }
     }

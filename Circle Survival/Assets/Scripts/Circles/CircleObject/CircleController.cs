@@ -4,8 +4,16 @@ using System;
 
 namespace CircleSurvival
 {
+    /***
+    * Controlls growing and shrinking animation
+    * Handles delegates when processes are done
+    ***/
     public class CircleController : MonoBehaviour, ICircleController, IClerable, ICoroutineRunner
     {
+
+        private float timeOfGrowth;
+        private float timeOfShrink;
+
         private Action onFullGrowth;
         private Action<GameObject> onFullGrowthCallback;
 
@@ -13,9 +21,6 @@ namespace CircleSurvival
         private Action<GameObject> onFullShrinkCallback;
 
         private Coroutine animationCoroutine;
-
-        private float timeOfGrowth;
-        private float timeOfShrink;
 
         private SpriteRenderer spriteRenderer;
         private SpriteRenderer SpriteRenderer
@@ -36,18 +41,11 @@ namespace CircleSurvival
             SpriteRenderer = GetComponent<SpriteRenderer>();
         }
 
-        public void Initialize()
-        {
-
-            gameObject.SetActive(false);
-        }
-
         public void Initialize(Color color, float timeOfGrowth, float timeOfShrink)
         {
             this.timeOfGrowth = timeOfGrowth;
             this.timeOfShrink = timeOfShrink;
             transform.localScale = Vector2.zero;
-            gameObject.SetActive(false);
             SpriteRenderer.color = color;
         }
 

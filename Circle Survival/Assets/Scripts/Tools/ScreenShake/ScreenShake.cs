@@ -2,7 +2,9 @@
 using System.Collections;
 
 namespace CircleSurvival {
-
+    /***
+     * just a notrmal screen shake
+     * */
     public class ScreenShake
     {
         private Transform cameraTransform;

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 
 namespace CircleSurvival
 {
+    /***
+     * Expandable object pool with unlimited pool size
+     * */
     public class ExpandableGameObjectPool : IObjectPool<GameObject>
     {
-        private GameObject prefab;
-        private Transform root;
+        private readonly GameObject prefab;
+        private readonly Transform root;
         public int size;
 
         private Stack<GameObject> stack;

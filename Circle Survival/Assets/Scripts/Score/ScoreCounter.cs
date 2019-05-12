@@ -1,9 +1,11 @@
 ﻿using System.Collections;
 using UnityEngine;
-using System;
 
 namespace CircleSurvival
 {
+    /***
+     * Adds score points in time
+     * */
     public class ScoreCounter
     {
         private readonly PlayerScore playerScore;
@@ -24,7 +26,6 @@ namespace CircleSurvival
             this.timeInterval = timeInterval;
             this.scorePoints = scorePoints;
         }
-
 
         public void StartScoreCounter()
         {

@@ -1,16 +1,13 @@
 ﻿using System;
-using UnityEngine;
 
 namespace CircleSurvival
 {
+    /***
+     * Simple event invoking once and then clearing itself
+     ***/
     public class SingleEvent: ISimpleEvent
     {
         private event Action onEvent;
-
-        public SingleEvent()
-        {
-            onEvent += TestEvent;
-        }
 
         public void Subscribe(Action eventAction)
         {
@@ -26,11 +23,6 @@ namespace CircleSurvival
         {
             onEvent?.Invoke();
             onEvent = null;
-        }
-
-        private void TestEvent()
-        {
-            Debug.Log("Invoking single event...");
         }
     }
 }

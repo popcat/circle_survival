@@ -12,9 +12,11 @@ namespace CircleSurvival
         [Header("Circle variables")]
         [SerializeField] private GameObject circlePrefab;
         [SerializeField] private int circleOptimalCount;
-        [SerializeField] private float circleSpawnTimeInterval;
-        [SerializeField] private float circleDeltaSpawnTime;
         [SerializeField] private float circleAnimationTime;
+        [SerializeField] private float circleMinSpawnTime;
+        [SerializeField] private float circleMaxSpawnTime;
+        [SerializeField] private float circleDeltaSpawnTime;
+        [SerializeField] private float circleDeltaSpawnAcceleration;
 
         [Header("Green Circle variables")]
         [SerializeField] private Color greenColor;
@@ -37,7 +39,7 @@ namespace CircleSurvival
 
         [Header("UI variables")]
         [SerializeField] private GameObject mainScoreLabel;
-        [SerializeField] private GameObject gameOverLayout;
+        [SerializeField] private GameObject gameOverRoot;
         [SerializeField] private float gameOverDelay;
 
         private ScreenData screenData;
@@ -49,12 +51,12 @@ namespace CircleSurvival
         private TouchManager touchManager;
 
         private PlayerScore playerScore;
-        private ScoreManager scoreManager;
+        private HighScoreManager scoreManager;
         private ScoreCounter scoreCounter;
         private TextController mainScoreTextController;
 
 
-        private GameOverManager gameOverManager;
+        private GameOverLayout gameOverLayout;
         private TextController endScoreTextController;
         private GameObject gameOverButton;
 
@@ -111,7 +113,7 @@ namespace CircleSurvival
             saveManager = new BinarySaveManager(Application.persistentDataPath + "/saveData.dat");
             playerScore = new PlayerScore();
             scoreCounter = new ScoreCounter(playerScore, mainCoroutineRunner, scorePoints: 5);
-            scoreManager = new ScoreManager(playerScore, saveManager);
+            scoreManager = new HighScoreManager(playerScore, saveManager);
             mainScoreTextController = new TextController(mainScoreLabel.GetComponent<Text>());
         }
 
@@ -125,7 +127,7 @@ namespace CircleSurvival
         {
             GameObject touchManagerObj = Instantiate(touchManagerPrefab);
             touchManager = touchManagerObj.GetComponent<TouchManager>();
-            ITouchInputWrapper touchInputWrapper = new MouseInputWrapper();
+            ITouchInputWrapper touchInputWrapper = new MouseAndTouchInputWrapper();
 
             touchManager.Initialize(touchInputWrapper);
         }
@@ -157,16 +159,16 @@ namespace CircleSurvival
 
             circleSpawner = new CircleSpawner(
                 greenCircleProvider, blackCircleProvider, positionProvider,
-                 mainCoroutineRunner, circleSpawnTimeInterval, circleDeltaSpawnTime
+                 mainCoroutineRunner, circleMinSpawnTime, circleMaxSpawnTime, circleDeltaSpawnTime, circleDeltaSpawnAcceleration
             );
         }
 
         private void CreateGameOverManagement()
         {
             NextSceneManager sceneManager = new NextSceneManager("StartScene");
-            ButtonController buttonController = new ButtonController(gameOverLayout.GetComponentInChildren<Button>(), sceneManager.LoadNextScene);
-            endScoreTextController = new TextController(gameOverLayout.transform.Find("PointsLabel").GetComponent<Text>());
-            gameOverManager = new GameOverManager(gameOverLayout, mainCoroutineRunner, gameOverDelay, scoreManager);
+            ButtonController buttonController = new ButtonController(gameOverRoot.GetComponentInChildren<Button>(), sceneManager.LoadNextScene);
+            endScoreTextController = new TextController(gameOverRoot.transform.Find("PointsLabel").GetComponent<Text>());
+            gameOverLayout = new GameOverLayout(gameOverRoot, mainCoroutineRunner, gameOverDelay, scoreManager);
         }
         #endregion
 
@@ -183,7 +185,7 @@ namespace CircleSurvival
             deathManager.Subscribe(touchManager.SetInactive);
             deathManager.Subscribe(scoreManager.SaveHighScore);
             deathManager.Subscribe(screenShake.StartShake);
-            deathManager.Subscribe(gameOverManager.ShowLayout);
+            deathManager.Subscribe(gameOverLayout.ShowLayout);
             deathManager.Subscribe(mainScoreTextController.SetInactive);
         }
 

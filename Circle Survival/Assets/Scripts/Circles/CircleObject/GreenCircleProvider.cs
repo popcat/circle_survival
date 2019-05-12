@@ -6,10 +6,9 @@ namespace CircleSurvival
     public class GreenCircleProvider: ICircleProvider
     {
         private readonly IObjectPool<GameObject> circlePool;
-        private Action OnExplode;
-
+        private readonly Action OnExplode;
         private float minTapTime, maxTapTime;
-        private readonly float deltaTapTime;
+        private float deltaTapTime;
         private readonly float baseAnimationTime;
         private readonly Color greenColor;
         private readonly Color redColor;
@@ -49,7 +48,6 @@ namespace CircleSurvival
             greenController.SubscribeFullShrink(PoolCircle);
             greenController.SetGrowing();
 
-            //todo color 
             redController.Initialize(redColor, tapTime, baseAnimationTime);
             redController.SubscribeFullGrowth(GreenCircleExplode);
 
@@ -86,8 +84,8 @@ namespace CircleSurvival
 
         private void UpdateTapTime()
         {
-            minTapTime = Mathf.Max(0, minTapTime - deltaTapTime);
-            maxTapTime = Mathf.Max(0, maxTapTime - deltaTapTime);
+            minTapTime = Mathf.Max(0.5f, minTapTime - deltaTapTime);
+            maxTapTime = Mathf.Max(0.5f, maxTapTime - deltaTapTime);
         }
     }
 }

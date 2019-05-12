@@ -3,13 +3,16 @@ using System.Runtime.Serialization.Formatters.Binary;
 
 namespace CircleSurvival
 {
+    /***
+     * Saving data in binary format with C# binary formatter
+     * */
     public class BinarySaveManager : ISaveManager
     {
         private readonly string filePath;
 
         public BinarySaveManager(string path)
         {
-            filePath = path;  //Application.persistentDataPath + "/saveData.dat";
+            filePath = path;
         }
 
         public void Save(SaveData data)

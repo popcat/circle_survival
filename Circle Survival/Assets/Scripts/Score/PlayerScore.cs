@@ -2,6 +2,9 @@
 
 namespace CircleSurvival
 {
+    /***
+     * Storing information and provides access to current player score
+     * */
     public class PlayerScore
     {
         private event Action<int> onScoreChange;
